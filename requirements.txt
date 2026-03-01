@@ -1,0 +1,7 @@
+langgraph
+langchain-community
+tavily-python
+python-dotenv
+flask
+flask-cors
+markdown

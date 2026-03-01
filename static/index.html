@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACE Research Agent — Autonomous Synthesis Engine</title>
+    <meta name="description" content="AI-powered research agent with knowledge graph synthesis, contradiction detection, and whitepaper generation.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                        <line x1="12" y1="22" x2="12" y2="15.5"></line>
+                        <polyline points="22 8.5 12 15.5 2 8.5"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h1>ACE Research Agent</h1>
+                    <span class="subtitle">Autonomous Synthesis Engine</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Idle</span>
+            </div>
+            <button class="btn btn-ghost" id="resetBtn" onclick="hardReset()" title="New Mission — Flush Context">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+                New Mission
+            </button>
+        </div>
+    </header>
+
+    <!-- ═══ MAIN LAYOUT ═══ -->
+    <main class="app-main">
+
+        <!-- ─── QUERY PANEL ─── -->
+        <section class="query-panel" id="queryPanel">
+            <div class="query-inner">
+                <div class="query-label">Research Query</div>
+                <div class="query-input-row">
+                    <input
+                        type="text"
+                        class="query-input"
+                        id="queryInput"
+                        placeholder="e.g., WiFi 7 vs 5G-Advanced for autonomous robotics: WCET jitter, TSN integration..."
+                        spellcheck="false"
+                    >
+                    <select class="depth-select" id="depthSelect">
+                        <option value="advanced">Advanced Search (2 credits)</option>
+                        <option value="basic">Basic Search (1 credit)</option>
+                    </select>
+                    <button class="btn btn-primary" id="launchBtn" onclick="startResearch()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        Launch
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PROGRESS BAR ─── -->
+        <div class="progress-container" id="progressContainer" style="display:none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-label" id="progressLabel">Initializing...</div>
+        </div>
+
+        <!-- ─── CONTENT AREA ─── -->
+        <div class="content-layout" id="contentLayout" style="display:none;">
+
+            <!-- LEFT: AGENT LOG -->
+            <aside class="log-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">⚡</span>
+                    <span>Agent Log</span>
+                    <span class="log-count" id="logCount">0</span>
+                </div>
+                <div class="log-terminal" id="logTerminal">
+                    <div class="log-entry log-system">Waiting for mission...</div>
+                </div>
+            </aside>
+
+            <!-- CENTER: RESULTS PANEL -->
+            <section class="results-panel">
+                <!-- Drafting Toggle -->
+                <div class="panel-header results-header">
+                    <div class="tab-group" id="tabGroup">
+                        <button class="tab active" data-tab="raw" onclick="toggleView('raw')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10A15 15 0 0 1 12 2z"></path>
+                            </svg>
+                            Raw Data
+                        </button>
+                        <button class="tab" data-tab="whitepaper" onclick="toggleView('whitepaper')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                            Whitepaper
+                        </button>
+                    </div>
+                    <div class="results-meta" id="resultsMeta"></div>
+                </div>
+
+                <!-- Raw Data View -->
+                <div class="tab-content active" id="rawView">
+                    <div class="stats-row" id="statsRow"></div>
+                    <div class="section-title">Knowledge Graph</div>
+                    <div class="mermaid-container" id="mermaidContainer"></div>
+                    <div class="section-title">Entities</div>
+                    <div class="entity-grid" id="entityGrid"></div>
+                    <div class="section-title">Relationships</div>
+                    <div class="relationship-table-wrap" id="relationshipTable"></div>
+                    <div class="section-title">Contradictions</div>
+                    <div class="contradictions-list" id="contradictionsList"></div>
+                </div>
+
+                <!-- Whitepaper View -->
+                <div class="tab-content" id="whitepaperView">
+                    <div class="whitepaper-rendered" id="whitepaperRendered">
+                        <p class="empty-state">Run a research mission to generate the whitepaper.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ─── CITATION SIDEBAR ─── -->
+        <div class="citation-overlay" id="citationOverlay" onclick="closeSidebar()"></div>
+        <aside class="citation-sidebar" id="citationSidebar">
+            <div class="sidebar-header">
+                <span>📎 Citation Detail</span>
+                <button class="btn-close" onclick="closeSidebar()">✕</button>
+            </div>
+            <div class="sidebar-content" id="sidebarContent">
+            </div>
+        </aside>
+
+    </main>
+
+    <script src="/app.js"></script>
+</body>
+</html>

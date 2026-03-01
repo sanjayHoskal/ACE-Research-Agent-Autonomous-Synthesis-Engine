@@ -173,6 +173,53 @@ deep_research_agent/
 
 ---
 
+## General Instructions to ask query for Engine
+
+To ensure your Autonomous Research & Synthesis Agent triggers its core logic—specifically the Identity Warden, Numerical Mandate, and Contradiction Engine—you should follow these five general conditions when crafting a query.
+
+Broad or conceptual queries (e.g., "What is AI?") will fail because they do not provide the technical density required by the agent's internal filters.
+
+1. Technical Specificity (The "Identity Warden" Trigger)
+The query must move beyond general concepts and name specific Frameworks, Protocols, Models, or Storage Engines.
+
+Fail: "How do AI agents store memory?"
+
+Pass: "Compare LangGraph's PostgresSaver vs. CrewAI's SQLite implementation for long-term memory persistence".
+
+2. Quantitative Requirements (The "Numerical Mandate" Trigger)
+The agent is hard-coded to hunt for hard data. You must explicitly demand benchmarks, limits, or costs to prevent "Unknown" results.
+
+Pass: Identify exact Worst-Case Execution Time (WCET) jitter in microseconds.
+
+Pass: Extract numerical limits for vector metadata filtering and inference throughput in tokens/sec.
+
+3. Architectural Rivalry (The "Contradiction Engine" Trigger)
+To trigger the agent’s "Reflective" logic, you should pit two or more technologies against each other to expose architectural trade-offs.
+
+Pass: Resolve the conflict between stateless context passing (MCP) and stateful session migration (OpenAI Realtime).
+
+Pass: Contrast Modular RAG latency versus Long-Context LLM infusion costs.
+
+4. Implementation-Level Context
+The query should reference specific internal mechanisms or standards rather than marketing terms.
+
+Pass: Analyze the impact of Multi-Link Operation (MLO) in WiFi 7 on deterministic latency.
+
+Pass: Evaluate the overhead of Zero-Knowledge Proofs (ZKP) on inference throughput.
+
+5. The "Complex Master" Template
+A "deployable" query usually follows this structure:
+
+[Technology A] vs [Technology B] for [Specific Use Case]: Extract [Numerical Metric 1], [Numerical Metric 2], and resolve the [Specific Architectural Conflict].
+
+Summary of Why This Matters
+Query Attribute	Benefit to the Agent
+Proper Names	Allows the Identity Warden to filter out "word salad".
+Numerical Units	Forces the Numerical Mandate to use shell tools for deep research.
+Contrasting Claims	Triggers the Verification Sub-Agent to find the "Ground Truth".
+High Density	Prevents the agent from timing out on broad, non-technical search results.
+
+
 ## 🧩 Engineering Complexities & Solutions
 
 Building a fully autonomous research agent surfaced several non-trivial engineering challenges:
